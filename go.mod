@@ -3,6 +3,7 @@ module github.com/Sohail-9098/vehicle-data-processing-analytics
 go 1.22.5
 
 require (
+	github.com/lib/pq v1.10.9
 	google.golang.org/grpc v1.65.0
 	google.golang.org/protobuf v1.34.2
 )

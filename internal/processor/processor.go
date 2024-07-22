@@ -1,24 +1,27 @@
 package processor
 
 import (
-	"log"
-
+	"github.com/Sohail-9098/vehicle-data-processing-analytics/internal/db"
 	"github.com/Sohail-9098/vehicle-data-processing-analytics/internal/protobufs/vehicle"
 	"github.com/Sohail-9098/vehicle-data-processing-analytics/internal/validator"
 )
 
 func ProcessTelemetryData(telemetryData *vehicle.Telemetry) {
+	conn := db.NewDB()
+	conn.Connect()
+	defer conn.Disconnect()
+
 	if validator.ValidateTelemetryData(telemetryData) {
-		saveToDataTable(telemetryData)
+		saveToDataTable(conn, telemetryData)
 	} else {
-		saveToAnamoliesTable(telemetryData)
+		saveToAnamoliesTable(conn, telemetryData)
 	}
 }
 
-func saveToDataTable(telemetryData *vehicle.Telemetry) {
-	log.Println("Valid Data: ", telemetryData)
+func saveToDataTable(conn *db.DB, telemetryData *vehicle.Telemetry) {
+	conn.InsertTelemetryData("TELEMETRY", telemetryData)
 }
 
-func saveToAnamoliesTable(telemetryData *vehicle.Telemetry) {
-	log.Println("Invalid Data: ", telemetryData)
+func saveToAnamoliesTable(conn *db.DB, telemetryData *vehicle.Telemetry) {
+	conn.InsertTelemetryData("ANAMOLIES", telemetryData)
 }
