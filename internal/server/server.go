@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 
+	"github.com/Sohail-9098/vehicle-data-processing-analytics/internal/processor"
 	"github.com/Sohail-9098/vehicle-data-processing-analytics/internal/protobufs/vehicle"
 	"google.golang.org/grpc"
 )
@@ -14,7 +15,7 @@ type server struct {
 }
 
 func (s *server) ProcessTelemetryData(ctx context.Context, data *vehicle.Telemetry) (*vehicle.Empty, error) {
-	log.Printf("received data: %v", data)
+	processor.ProcessTelemetryData(data)
 	return &vehicle.Empty{}, nil
 }
 
